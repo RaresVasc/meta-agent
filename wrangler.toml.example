@@ -1,0 +1,46 @@
+# Cloudflare Workers Configuration
+# Update your account_id from: https://dash.cloudflare.com/
+
+name = "meta-agent"
+type = "javascript"
+account_id = "YOUR_ACCOUNT_ID_HERE"  # Replace with your Cloudflare account ID
+workers_dev = true
+compatibility_date = "2024-01-01"
+main = "meta-agent.worker.js"
+
+# Routes configuration (optional, for custom domains)
+# [[routes]]
+# pattern = "meta-agent.example.com/*"
+# zone_id = "YOUR_ZONE_ID"
+
+# Environment: Development (default)
+[env.development]
+vars = { BACKEND_URL = "http://localhost:3000" }
+
+# Environment: Production (use when deploying)
+[env.production]
+route = "https://meta-agent.example.com/run"  # Update to your domain
+zone_id = "YOUR_ZONE_ID"                       # Your Cloudflare zone ID
+vars = { BACKEND_URL = "https://api.example.com" }
+
+# Triggers (optional, for scheduled execution)
+# [[triggers.crons]]
+# crons = ["0 0 * * *"]  # Daily at midnight UTC
+
+# Limits (optional)
+[limits]
+cpu_ms = 30000  # 30 second CPU timeout
+
+# Build configuration (optional)
+[build]
+command = "npm install"
+cwd = "./"
+
+# KV Namespace Bindings (optional, for state management)
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "your-kv-namespace-id"
+
+# Analytics Engine Binding (optional, for metrics)
+# [[analytics_engine_datasets]]
+# binding = "ANALYTICS"
